@@ -1,0 +1,417 @@
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Courier New;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\f0\fs22\lang1033 -- Summary of Findings and recommendations For LetsMeet.\par
+    Answers to questions requested.-- \par
+\par
+-- 1. How many Toastmasters events are there using LetsMeet in New York, Chicago and San Francisco?\par
+ \par
+/* On LetsMeet, there aare 1,117 total events of Toastmasters where  \par
+      - 986 are in Chicago,  \par
+      - 124 in New York and \par
+\tab   - 7 in San Francisco. \par
+\par
+\par
+\par
+-- 2. Is LetsMeet membership leveling off?\par
+\par
+- LetsMeet membership had a year where is not showing growth like the other years: 2017\par
+- Since 2013 at least 1,000 members in LetsMeet had joined per year, but \par
+- In 2017 there was a small growth of just 363 total new members. \par
+ \par
+ The months that had less numbers of members joined were November and December,\par
+ being December the month that least people enrolled significantly.\par
+ \par
+- November had only 218 new members, from which\par
+     -102 in the city of New York,  \par
+     -62 in San Francisco and \par
+     -52 in Chicago\par
+     \par
+- December just 12 new members from which \par
+\tab -9 were in New York \par
+\tab -3 in Chicago \par
+    - 0 in San Francisco.\par
+    \par
+   -The holiday season is afecting significantly to the growth of LetsMeet. \par
+    -Opening holidays/Christmas related groups in Novemeber and December \par
+    might increase the members joining. \par
+\par
+\par
+\par
+-- 3. What five groups should marketing feature in their upcoming campaign?*\par
+The groups I recomend for the marketing campaign are \par
+\par
+-----New York Art MeetUp-----\par
+\par
+- With a total of 9082 members and 5 rating they have \par
+had 6 events in 2017. \par
+Marketing an upcomming event could lead to growth of the group.\par
+\par
+\par
+-----NYC Local Singles and Professionals Get Togethers -----\par
+\par
+- With a total of 5,776 members this 5 rate group is very diverse \par
+in meetup description.\par
+-They have had no events so it might be a good opportunity to\par
+organize a First event for this group in the marketing campaign. \par
+\par
+\par
+-----New York Travel Photography-----\par
+\par
+- With a total of 4,786  members this 5 rate gruop that\par
+has had no events.\par
+- It  might be a good opportunity to organize a First event\par
+ for this group in the marketing campaign. \par
+\par
+\par
+\par
+----- Chicago Young Profesionals -----\par
+\par
+-  With a total of 4,057 members this 5 rate group is very diverse in\par
+ meetup description.\par
+-They have had no events so it might be a good opportunity to\par
+organize a First event for this group in the marketing campaign. \par
+\par
+\par
+\par
+----- San Francisco- The Machine Learning Conference-----\par
+\par
+-Since an art group has been recommended for NYC,\par
+  with a total of 2,051 members and rating 5,  \par
+ I recomend the group with the second most members for San Francisco.\par
+-There are everal Tech/AI/DATA groups in San Francisco so perhaps is a city\par
+that has special interest for that area and this could be a good group to \par
+support for the growth of it and the technology develpment.\par
+\par
+\par
+\par
+ Answers to GUIDING QUESTIONS TO CONSIDER : \par
+-745 total number of 5 rating groups \par
+-2792 total number of rated groups \par
+-26.6% of groups have rating = 5 \par
+-70% of groups have rating= 4 \par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\ul\fs44 Part 2 : Data Analysis Process\ulnone\par
+\par
+\fs40 1. Growth Analysis: \fs44\par
+\fs22\par
+
+\pard /*why membership is not growing like it used to .\par
+we will first find the year*/ \par
+\par
+/*2*growth of Lets meet/\par
+\par
+SELECT \par
+    year, city, COUNT(DISTINCT (member_id)) AS members_joined\par
+FROM\par
+    (SELECT \par
+        YEAR(MIN(joined)) AS year, member_id, city\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+GROUP BY year\par
+ORDER BY year;\par
+\par
+\par
+/* 3 data cleaning */\par
+\par
+set sql_safe_updates = 0;\par
+\par
+UPDATE grp_member \par
+SET \par
+    city = 'Chicago'\par
+WHERE\par
+    city IN ('East Chicago' , 'West Chicago',\par
+        'North Chicago',\par
+        'Chicago Heights',\par
+        'Chicago Ridge',\par
+        'Chicago');\par
+ UPDATE grp_member \par
+SET \par
+    city = 'San Francisco'\par
+WHERE\par
+    city IN ('San Francisco', 'South San Francisco');\par
+ update grp_member\par
+set city = "New York" \par
+where city in ( 'New York', 'West New York');\par
+ \par
+ SELECT \par
+    *\par
+FROM\par
+    grp_member\par
+GROUP BY city;\par
+ \par
+ set sql_safe_updates = 1;\par
+ \par
+ /*4*/\par
+ \par
+ SELECT \par
+    year,  COUNT(DISTINCT (member_id)) AS members_joined\par
+FROM\par
+    (SELECT \par
+        YEAR(MIN(joined)) AS year, member_id, city\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'Chicago'\par
+GROUP BY year\par
+ORDER BY year;\par
+\par
+ SELECT \par
+    year, city, COUNT(DISTINCT (member_id)) AS members_joined\par
+FROM\par
+    (SELECT \par
+        YEAR(MIN(joined)) AS year, member_id, city\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'San Francisco'\par
+GROUP BY year\par
+ORDER BY year;\par
+\par
+ SELECT \par
+    year,  COUNT(DISTINCT (member_id)) AS members_joined\par
+FROM\par
+    (SELECT \par
+        YEAR(MIN(joined)) AS year, member_id, city\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'New York'\par
+GROUP BY year\par
+ORDER BY year;\par
+\par
+/*5.*/ \par
+ SELECT \par
+   month, COUNT(DISTINCT (member_id)) AS members_joined, year\par
+FROM\par
+    (SELECT \par
+        month(MIN(joined)) AS month, member_id, city , year(MIN(joined)) as year\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    year = "2017"\par
+GROUP BY month \par
+ORDER BY month;\par
+\par
+ SELECT \par
+   month, COUNT(DISTINCT (member_id)) AS members_joined, year\par
+FROM\par
+    (SELECT \par
+        month(MIN(joined)) AS month, member_id, city , year(MIN(joined)) as year\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'New York' and year = "2017"\par
+GROUP BY month \par
+ORDER BY month;\par
+\par
+ SELECT \par
+   month, COUNT(DISTINCT (member_id)) AS members_joined, year\par
+FROM\par
+    (SELECT \par
+        month(MIN(joined)) AS month, member_id, city , year(MIN(joined)) as year\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'Chicago' and year = "2017"\par
+GROUP BY month \par
+ORDER BY month;\par
+ SELECT \par
+   month, COUNT(DISTINCT (member_id)) AS members_joined, year\par
+FROM\par
+    (SELECT \par
+        month(MIN(joined)) AS month, member_id, city , year(MIN(joined)) as year\par
+    FROM\par
+        grp_member\par
+    GROUP BY member_id) t1\par
+WHERE\par
+    city = 'San Francisco' and year = "2017"\par
+GROUP BY month \par
+ORDER BY month;\par
+\par
+\par
+\par
+\par
+\par
+\fs40 2.RATINGS: Featured Groups\fs22\par
+\par
+/* 2. ratings*/\par
+\par
+\par
+SELECT \par
+    COUNT(group_id) AS total_groups,\par
+    members,\par
+    CASE\par
+        WHEN rating BETWEEN 1 AND 1.99 THEN '1'\par
+        WHEN rating BETWEEN 2 AND 2.99 THEN '2'\par
+        WHEN rating BETWEEN 3 AND 3.99 THEN '3'\par
+        WHEN rating BETWEEN 4 AND 4.99 THEN '4'\par
+        WHEN rating = 5 THEN '5'\par
+        ELSE 0\par
+    END AS ratings\par
+FROM\par
+    grp\par
+GROUP BY ratings\par
+ORDER BY members DESC;\par
+\par
+\par
+\par
+/*2*/\par
+\par
+SELECT \par
+    created,\par
+    description,\par
+    join_mode,\par
+    group_name,\par
+    rating,\par
+    members,\par
+    who\par
+FROM\par
+    grp\par
+WHERE\par
+    rating = 5\par
+ORDER BY members DESC;\par
+\par
+\par
+/*3*/\par
+SELECT \par
+    created,\par
+    description,\par
+    join_mode,\par
+    group_name,\par
+    rating,\par
+    members,\par
+    who,\par
+    city\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+WHERE\par
+    rating = 5 \par
+ORDER BY members DESC;\par
+\par
+\par
+SELECT \par
+  created,\par
+    description,\par
+    join_mode,\par
+    group_name,\par
+    rating,\par
+    members,\par
+    who,\par
+    city\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+WHERE\par
+    rating = 5  AND city = 'New York'\par
+ORDER BY members DESC\par
+LIMIT 3;\par
+\par
+\par
+SELECT \par
+ created,\par
+    description,\par
+    join_mode,\par
+    group_name,\par
+    rating,\par
+    members,\par
+    who,\par
+    city\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+\par
+WHERE\par
+    rating = 5 AND city = 'Chicago'\par
+ORDER BY members DESC\par
+LIMIT 1;\par
+\par
+SELECT \par
+     created,\par
+    description,\par
+    join_mode,\par
+    group_name,\par
+    rating,\par
+    members,\par
+    who,\par
+    city\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+WHERE\par
+    rating = 5 AND city = 'San Francisco'\par
+ORDER BY members DESC\par
+LIMIT 5;\par
+\par
+/* OTHER EXTRA EXPLORATION*/\par
+SELECT \par
+    *\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+        LEFT JOIN\par
+    event ON event.group_id = grp.group_id\par
+WHERE\par
+    group_name = 'Chicago Young Professionals - Business, Social & Tech Events'\par
+        AND city = 'Chicago'\par
+ORDER BY members DESC\par
+;\par
+\par
+SELECT \par
+    *\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+        LEFT JOIN\par
+    event ON event.group_id = grp.group_id\par
+WHERE\par
+    group_name = 'San Francisco- The Machine Learning Conference'\par
+ORDER BY members DESC;\par
+\par
+SELECT \par
+    *\par
+FROM\par
+    grp\par
+        LEFT JOIN\par
+    city ON city.city_id = grp.city_id\par
+        LEFT JOIN\par
+    event ON event.group_id = grp.group_id\par
+WHERE\par
+    group_name = 'NYC Local Singles and Professionals Get Togethers'\par
+ORDER BY members DESC;\par
+\par
+
+\pard\par
+\par
+\par
+\par
+\par
+}
+ 
